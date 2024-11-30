@@ -1,7 +1,10 @@
 //! Utilities for testing user input.
 
 use bevy::{
-    app::App, ecs::system::SystemState, math::Vec2, prelude::{Entity, Gamepad, Query, With, World}
+    app::App,
+    ecs::system::SystemState,
+    math::Vec2,
+    prelude::{Entity, Gamepad, Query, With, World},
 };
 
 use super::{updating::CentralInputStore, Axislike, Buttonlike, DualAxislike};
