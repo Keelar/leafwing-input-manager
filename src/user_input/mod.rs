@@ -218,6 +218,22 @@ pub trait Buttonlike:
     }
 }
 
+impl UserInput for Box<dyn Buttonlike> {
+    fn kind(&self) -> InputControlKind {
+        self.as_ref().kind()
+    }
+
+    fn decompose(&self) -> BasicInputs {
+        self.as_ref().decompose()
+    }
+}
+
+impl Buttonlike for Box<dyn Buttonlike> {
+    fn pressed(&self, input_store: &CentralInputStore, gamepad: Entity) -> bool {
+        self.as_ref().pressed(input_store, gamepad)
+    }
+}
+
 /// A trait used for axis-like user inputs, which provide a continuous value.
 pub trait Axislike:
     UserInput + DynClone + DynEq + DynHash + Reflect + erased_serde::Serialize
@@ -242,6 +258,22 @@ pub trait Axislike:
     /// if the provided gamepad is `None`.
     fn set_value_as_gamepad(&self, world: &mut World, value: f32, _gamepad: Option<Entity>) {
         self.set_value(world, value);
+    }
+}
+
+impl UserInput for Box<dyn Axislike> {
+    fn kind(&self) -> InputControlKind {
+        self.as_ref().kind()
+    }
+
+    fn decompose(&self) -> BasicInputs {
+        self.as_ref().decompose()
+    }
+}
+
+impl Axislike for Box<dyn Axislike> {
+    fn value(&self, input_store: &CentralInputStore, gamepad: Entity) -> f32 {
+        self.as_ref().value(input_store, gamepad)
     }
 }
 
@@ -272,6 +304,22 @@ pub trait DualAxislike:
     }
 }
 
+impl UserInput for Box<dyn DualAxislike> {
+    fn kind(&self) -> InputControlKind {
+        self.as_ref().kind()
+    }
+
+    fn decompose(&self) -> BasicInputs {
+        self.as_ref().decompose()
+    }
+}
+
+impl DualAxislike for Box<dyn DualAxislike> {
+    fn axis_pair(&self, input_store: &CentralInputStore, gamepad: Entity) -> Vec2 {
+        self.as_ref().axis_pair(input_store, gamepad)
+    }
+}
+
 /// A trait used for triple-axis-like user inputs, which provide separate X, Y, and Z values.
 pub trait TripleAxislike:
     UserInput + DynClone + DynEq + DynHash + Reflect + erased_serde::Serialize
@@ -299,10 +347,25 @@ pub trait TripleAxislike:
     }
 }
 
+impl UserInput for Box<dyn TripleAxislike> {
+    fn kind(&self) -> InputControlKind {
+        self.as_ref().kind()
+    }
+
+    fn decompose(&self) -> BasicInputs {
+        self.as_ref().decompose()
+    }
+}
+
+impl TripleAxislike for Box<dyn TripleAxislike> {
+    fn axis_triple(&self, input_store: &CentralInputStore, gamepad: Entity) -> Vec3 {
+        self.as_ref().axis_triple(input_store, gamepad)
+    }
+}
+
 /// A wrapper type to get around the lack of [trait upcasting coercion](https://github.com/rust-lang/rust/issues/65991).
 ///
 /// To return a generic [`UserInput`] trait object from a function, you can use this wrapper type.
-
 #[derive(Reflect, Debug, Clone, PartialEq, Eq, Hash, Serialize)]
 pub enum UserInputWrapper {
     /// Wraps a [`Buttonlike`] input.
