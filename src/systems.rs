@@ -120,7 +120,7 @@ pub fn filter_captured_input(
         .iter()
         .any(|&interaction| interaction != bevy::ui::Interaction::None)
     {
-        mouse_buttons.clear();
+        //mouse_buttons.clear();
     }
 
     // If egui wants to own inputs, don't also apply them to the game state
