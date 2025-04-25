@@ -1,6 +1,28 @@
 # Release Notes
 
-## Version 0.16.0 (Unreleased)
+## Version 0.17.0 (unreleased)
+
+### Breaking Changes
+
+- removed the `egui` feature together with the `bevy_egui` dependency, absorbing inputs is now supported by `bevy_egui` itself
+
+### Enhancements
+
+- added `EnabledInput` resources to allow disabling input handling by input type
+
+### Bugs (0.17.0)
+
+- fixed the bug making it impossible to register custom input types via `register_input_kind`
+
+### Dependencies (0.17.0)
+
+- now supports Bevy 0.16
+
+## Version 0.16.0
+
+### Dependencies (0.16.0)
+
+- now supports Bevy 0.15 and bevy_egui 0.31
 
 ### Bugs (0.16.0)
 
